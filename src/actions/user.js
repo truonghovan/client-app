@@ -119,7 +119,7 @@ export const getOrders = () => {
 export const getOrder = (payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`/getOrder`, payload);
+      const res = await axios.post(`/buyer/order/getOrder`, payload);
       dispatch({ type: userConstants.GET_USER_ORDER_DETAILS_REQUEST });
       if (res.status === 200) {
         console.log(res);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addToCart, getCartItems } from '../../actions'
+import { addToCart, getCartItems, removeCartItem } from '../../actions'
 import { Layout } from '../../components/Layout'
 import { MaterialButton } from '../../components/MaterialUI'
 import PriceDetails from '../../components/PriceDetails'
@@ -27,7 +27,9 @@ export const CartPage = (props) => {
             dispatch(getCartItems())
         }
     }, [auth.authenticate])
-
+    const onRemoveCartItem = (_id) => {
+        dispatch(removeCartItem({ productId: _id }));
+      };
     const onQuantityIncrement = (_id, qty) => {
         const { name, price, img } = cartItems[_id];
         dispatch(addToCart({ _id, name, price, img }, 1));
@@ -37,37 +39,41 @@ export const CartPage = (props) => {
         const { name, price, img } = cartItems[_id];
         dispatch(addToCart({ _id, name, price, img }, -1));
     }
-    
+
     if (props.onlyCartItems) {
         return (
-          <>
-            {Object.keys(cartItems).map((key, index) => (
-              <CartItem
-                key={index}
-                cartItem={cartItems[key]}
-                onQuantityInc={onQuantityIncrement}
-                onQuantityDec={onQuantityDecrement}
-              />
-            ))}
-          </>
+            <>
+                {Object.keys(cartItems).map((key, index) => (
+                    <CartItem
+                        key={index}
+                        cartItem={cartItems[key]}
+                        onQuantityInc={onQuantityIncrement}
+                        onQuantityDec={onQuantityDecrement}
+                    />
+                ))}
+            </>
         );
-      }
+    }
 
     return (
 
         <Layout>
-            <div className="cartContainer flexRow" style={{ alignItems: 'flex-start' }}>
-                <Card headerLeft={`My Cart`} headerRight={<div>Deliver To</div>}>
-                    {
-                        Object.keys(cartItems).map((key, index) =>
-                            <CartItem
-                                key={index}
-                                cartItem={cartItems[key]}
-                                onQuantityDec={onQuantityDecrement}
-                                onQuantityInc={onQuantityIncrement}
-                            />
-                        )
-                    }
+            <div className="cartContainer" style={{ alignItems: "flex-start" }}>
+                <Card
+                    headerLeft={`My Cart`}
+                    headerRight={<div>Deliver to</div>}
+                    style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
+                >
+                    {Object.keys(cartItems).map((key, index) => (
+                        <CartItem
+                            key={index}
+                            cartItem={cartItems[key]}
+                            onQuantityInc={onQuantityIncrement}
+                            onQuantityDec={onQuantityDecrement}
+                            onRemoveCartItem={onRemoveCartItem}
+                        />
+                    ))}
+
                     <div
                         style={{
                             width: "100%",
@@ -86,7 +92,6 @@ export const CartPage = (props) => {
                             />
                         </div>
                     </div>
-
                 </Card>
                 <PriceDetails
                     totalItem={Object.keys(cart.cartItems).reduce(function (qty, key) {

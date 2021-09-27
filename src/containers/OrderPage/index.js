@@ -9,6 +9,7 @@ import { IoIosArrowForward } from "react-icons/io";
 
 import "./style.css";
 import { Breed } from "../../components/MaterialUI";
+import { generatePublicUrl } from "../../urlConfig";
 
 /**
  * @author
@@ -23,8 +24,7 @@ const OrderPage = (props) => {
     dispatch(getOrders());
   }, []);
 
-  console.log(user);
-
+  
   return (
     <Layout>
       <div style={{ maxWidth: "1160px", margin: "5px auto" }}>
@@ -46,7 +46,7 @@ const OrderPage = (props) => {
                 <div className="orderImgContainer">
                   <img
                     className="orderImg"
-                    src={item.productId.productPictures[0].img}
+                    src={generatePublicUrl(item.productId.productPicture[0].img)}
                   />
                 </div>
                 <div className="orderRow">

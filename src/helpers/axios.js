@@ -26,6 +26,13 @@ axiosIntance.interceptors.response.use(
       return Promise.reject(error)
     }
   )
+  axiosIntance.interceptors.request.use((req) => {
+    const { auth } = store.getState();
+    if (auth.token) {
+      req.headers.Authorization = `Bearer ${auth.token}`;
+    }
+    return req;
+  });
   
 
 export default axiosIntance

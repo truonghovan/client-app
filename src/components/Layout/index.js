@@ -1,4 +1,5 @@
 import React from 'react'
+import Footer from '../Footer'
 import Header from '../Header/index'
 import { MenuHeader } from '../MenuHeader'
 
@@ -13,6 +14,7 @@ export const Layout = (props) => {
         <Header/>
         <MenuHeader/> 
         {props.children}
+        <Footer />
         
     </>
    )
